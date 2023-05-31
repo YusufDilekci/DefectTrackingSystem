@@ -61,23 +61,23 @@ public class DefectEntryManager implements DefectEntryService{
 		
 		defectRepository.deleteById(id);
 		
-		return new SuccessResult("Defect silindi");
+		return new SuccessResult("Defect deleted");
 	}
 	
 	public Result update(UpdateDefectRequest request) {
-		var defect = defectRepository.findById(request.getId());
+		VehicleDefect defect = defectRepository.findById(request.getId()).get();
 		
 		if(defect != null) {
 			VehicleDefect vehicleDefect = this.modelMapperService.forRequest()
 					.map(request, VehicleDefect.class);
 			
-			
+			vehicleDefect.setImage(defect.getImage());
 			defectRepository.save(vehicleDefect);
 			
 			return new SuccessResult("Defect is updated");
 		}
 		
-		return new ErrorResult("Bir hata meydana geldi");
+		return new ErrorResult("An error has occured");
 		
 	}
 
@@ -128,7 +128,6 @@ public class DefectEntryManager implements DefectEntryService{
 	private Result editDefectImage(CreateDefectRequest request, VehicleDefect defect) throws Exception{
 		
 			String Path_Directory = "C:\\Users\\Jossoft\\Desktop\\Java\\ToyotaProject\\DefectTrackingSystem\\src\\main\\resources\\static\\";
-			//String Path_Directory = new ClassPathResource("static/").getFile().getAbsolutePath();
 			
 			if(request.getFile() != null) {
 				
@@ -155,11 +154,11 @@ public class DefectEntryManager implements DefectEntryService{
 		        File outputfile = new File(imagePath);
 		        ImageIO.write(image, "png", outputfile);
 		        
-		        return new SuccessResult("Image başarılı şekilde düzenlendi");
+		        return new SuccessResult("Image successfully edited");
 			}
 			
 	     
-	        return new ErrorResult("Image uygun bir şekilde yüklenemedi");
+	        return new ErrorResult("Image was not loaded properly");
 	       
 	}
 	

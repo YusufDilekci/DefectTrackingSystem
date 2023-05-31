@@ -34,7 +34,7 @@ public class DefectEntriesController {
 	}
 	
 	@GetMapping("/update-defect")
-	public ResponseEntity<?> delete(@RequestBody UpdateDefectRequest request){
+	public ResponseEntity<?> update(@RequestBody UpdateDefectRequest request){
 		
 		return ResponseEntity.ok(defectEntryService.update(request));
 	}

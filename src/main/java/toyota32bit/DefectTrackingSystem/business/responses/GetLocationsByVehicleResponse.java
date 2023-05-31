@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class GetLocationsByVehicleResponse {
 	
 	private int id;
+	private int defectId;
 	private String location;
+
 }

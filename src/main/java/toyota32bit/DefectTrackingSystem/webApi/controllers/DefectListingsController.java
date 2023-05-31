@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import toyota32bit.DefectTrackingSystem.business.abstracts.DefectListingService;
+import toyota32bit.DefectTrackingSystem.business.requests.GetDefectsByTypeRequest;
 import toyota32bit.DefectTrackingSystem.business.requests.GetLastRecordsRequest;
 import toyota32bit.DefectTrackingSystem.business.requests.GetPageableDefectRequest;
 
@@ -54,5 +55,11 @@ public class DefectListingsController {
 		
 		return ResponseEntity.ok(defectListingService.getLocationsByVehicle(vehicleId));
 	}
+	
+	@GetMapping("/getDefectsByType")
+	public ResponseEntity<?> getDefectsByType(@RequestBody GetDefectsByTypeRequest request){
+		
+		return ResponseEntity.ok(defectListingService.getDefectsByType(request));
+	} 
 	
 }

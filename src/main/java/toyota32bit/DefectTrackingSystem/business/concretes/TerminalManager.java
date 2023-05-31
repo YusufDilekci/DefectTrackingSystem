@@ -20,7 +20,7 @@ public class TerminalManager implements TerminalService{
 	@Override
 	public DataResult<List<Terminal>> getTerminals() {
 		
-		return new SuccessDataResult<List<Terminal>>("Aktif terminaller getirildi",terminalRepository.findAll());
+		return new SuccessDataResult<List<Terminal>>("Active terminals shown",terminalRepository.findAll());
 	}
 	
 }

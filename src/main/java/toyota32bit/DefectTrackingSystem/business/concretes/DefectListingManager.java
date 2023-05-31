@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import toyota32bit.DefectTrackingSystem.business.abstracts.DefectListingService;
+import toyota32bit.DefectTrackingSystem.business.requests.GetDefectsByTypeRequest;
 import toyota32bit.DefectTrackingSystem.business.requests.GetLastRecordsRequest;
 import toyota32bit.DefectTrackingSystem.business.requests.GetPageableDefectRequest;
+import toyota32bit.DefectTrackingSystem.business.responses.GetDefectsByTypeResponse;
 import toyota32bit.DefectTrackingSystem.business.responses.GetDefectsByVehicleResponse;
+import toyota32bit.DefectTrackingSystem.business.responses.GetLastRecordsResponse;
 import toyota32bit.DefectTrackingSystem.business.responses.GetLocationsByVehicleResponse;
 import toyota32bit.DefectTrackingSystem.business.responses.GetPageableDefectResponse;
 import toyota32bit.DefectTrackingSystem.core.utilities.mappers.ModelMapperService;
@@ -50,10 +53,17 @@ public class DefectListingManager implements DefectListingService{
 		
 	}
 	
-	public List<VehicleDefect> getLastRecords(GetLastRecordsRequest request){
+	public List<GetLastRecordsResponse> getLastRecords(GetLastRecordsRequest request){
 		Pageable pageable = PageRequest.of(0, request.getSize(), Sort.by(request.getSortBy()).descending());
 		
-		return defectRepository.findAll(pageable).getContent();
+		List<VehicleDefect> defects = defectRepository.findAll(pageable).getContent();
+		
+		List<GetLastRecordsResponse> response = defects.stream()
+				.map(defect -> this.modelMapperService.forResponse()
+						.map(defect, GetLastRecordsResponse.class))
+				.collect(Collectors.toList());
+		
+		return response;
 	}
 	
 	/**
@@ -97,5 +107,17 @@ public class DefectListingManager implements DefectListingService{
 				.collect(Collectors.toList());
 		
 		return locationResponse;
+	}
+	
+	public List<GetDefectsByTypeResponse> getDefectsByType(GetDefectsByTypeRequest request){
+			
+		List<VehicleDefect> vehicleDefects = defectRepository.getByType(request.getType());
+		
+		List<GetDefectsByTypeResponse> response = vehicleDefects.stream()
+				.map(defect -> this.modelMapperService.forResponse()
+						.map(defect, GetDefectsByTypeResponse.class))
+				.collect(Collectors.toList());
+		
+		return response;
 	}
 }

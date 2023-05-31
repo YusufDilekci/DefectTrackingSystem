@@ -18,7 +18,7 @@ public interface VehicleDefectRepository extends JpaRepository<VehicleDefect, In
 	@Query(value = "UPDATE VehicleDefect v SET v.deleted = true where vehicle.id = :vehicleId")
 	void deleteByVehicleId(@Param("vehicleId") int vehicleId);
 	
-	@Query("SELECT v FROM VehicleDefect v WHERE v.type = :type")
+
 	List<VehicleDefect> getByType(@Param("type") String type);
 	
 	
